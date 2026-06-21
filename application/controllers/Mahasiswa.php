@@ -64,11 +64,6 @@ class Mahasiswa extends CI_Controller
     {
     if($this->input->post()){
 
-        echo "NIM : ".$nim;
-        echo "<pre>";
-        print_r($_POST);
-        die();
-
         $data = [
 
             'nama' => $this->input->post('nama'),
@@ -78,9 +73,10 @@ class Mahasiswa extends CI_Controller
         ];
 
         $this->Mahasiswa_model->update($nim,$data);
+
         $this->session->set_flashdata(
             'success',
-            'Data mahasiswa berhasil di ubah'
+            'Data mahasiswa berhasil diupdate'
         );
 
         redirect(base_url('index.php/mahasiswa'));
@@ -88,7 +84,10 @@ class Mahasiswa extends CI_Controller
 
     $data['mhs'] = $this->Mahasiswa_model->getByNim($nim);
 
-    $this->load->view('admin/mahasiswa/edit',$data);
+    $this->load->view(
+        'admin/mahasiswa/edit',
+        $data
+    );
     }
 
     public function hapus($nim)

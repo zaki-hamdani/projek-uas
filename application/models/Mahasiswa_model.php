@@ -28,16 +28,12 @@ class Mahasiswa_model extends CI_Model {
 
     public function update($nim,$data)
     {
-    $this->db->where('nim',$nim);
-    $this->db->update('mahasiswa',$data);
-
-    echo $this->db->last_query();
-    echo "<br><br>";
-
-    echo "Affected Rows : ";
-    echo $this->db->affected_rows();
-
-    die();
+    return $this->db
+                ->where('nim',$nim)
+                ->update(
+                    'mahasiswa',
+                    $data
+                );
     }
 
     public function delete($nim)
