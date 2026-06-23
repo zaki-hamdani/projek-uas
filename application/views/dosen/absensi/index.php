@@ -25,18 +25,38 @@ Tambah Absensi
 <th>Tanggal</th>
 <th>Pertemuan</th>
 <th>Status</th>
+<th>Aksi</th>
 </tr>
 
 <?php foreach($absensi as $a): ?>
 
 <tr>
 
-<td><?= $a->nim ?></td>
-<td><?= $a->nama ?></td>
-<td><?= $a->nama_matkul ?></td>
-<td><?= $a->tanggal ?></td>
-<td><?= $a->pertemuan ?></td>
-<td><?= $a->status_kehadiran ?></td>
+    <td><?= $a->nim ?></td>
+    <td><?= $a->nama ?></td>
+    <td><?= $a->nama_matkul ?></td>
+    <td><?= $a->tanggal ?></td>
+    <td><?= $a->pertemuan ?></td>
+    <td><?= $a->status_kehadiran ?></td>
+
+    <td>
+
+        <a href="<?= base_url('index.php/absensi/edit/'.$a->id_absensi) ?>"
+           class="btn btn-warning btn-sm">
+
+            Edit
+
+        </a>
+
+        <a href="<?= base_url('index.php/absensi/hapus/'.$a->id_absensi) ?>"
+           class="btn btn-danger btn-sm"
+           onclick="return confirm('Yakin hapus data?')">
+
+            Hapus
+
+        </a>
+
+    </td>
 
 </tr>
 

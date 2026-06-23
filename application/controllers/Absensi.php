@@ -55,4 +55,48 @@ class Absensi extends CI_Controller
             $data
         );
     }
+    
+    public function edit($id)
+{
+    $data['absensi'] =
+        $this->Absensi_model->getById($id);
+
+    $data['mahasiswa'] =
+        $this->Mahasiswa_model->getAll();
+
+    $data['matakuliah'] =
+        $this->Matakuliah_model->getAll();
+
+    if($this->input->post())
+    {
+        $update = [
+
+            'nim' => $this->input->post('nim'),
+            'id_matkul' => $this->input->post('id_matkul'),
+            'tanggal' => $this->input->post('tanggal'),
+            'pertemuan' => $this->input->post('pertemuan'),
+            'status_kehadiran' => $this->input->post('status_kehadiran')
+
+        ];
+
+        $this->Absensi_model->update(
+            $id,
+            $update
+        );
+
+        redirect('index.php/absensi');
+    }
+
+    $this->load->view(
+        'dosen/absensi/edit',
+        $data
+    );
+}
+
+public function hapus($id)
+{
+    $this->Absensi_model->delete($id);
+
+    redirect('index.php/absensi');
+}
 }
