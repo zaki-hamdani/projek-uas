@@ -33,11 +33,28 @@ class Dashboard extends CI_Controller
     }
 
     public function dosen()
-    {
-        cek_role('dosen');
+{
+    cek_role('dosen');
 
-        $this->load->view('dosen/dashboard');
-    }
+    $data['total_mahasiswa'] =
+        $this->db->count_all('mahasiswa');
+
+    $data['total_matkul'] =
+        $this->db->count_all('matakuliah');
+
+    $data['total_absensi'] =
+        $this->db->count_all('absensi');
+
+    $data['hadir_hari_ini'] =
+        $this->db
+            ->where('tanggal', date('Y-m-d'))
+            ->count_all_results('absensi');
+
+    $this->load->view(
+        'dosen/dashboard',
+        $data
+    );
+}
 
     public function mahasiswa()
     {
