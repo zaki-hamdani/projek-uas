@@ -58,8 +58,21 @@ class Dashboard extends CI_Controller
 
     public function mahasiswa()
     {
-        cek_role('mahasiswa');
+    cek_role('mahasiswa');
 
-        $this->load->view('mahasiswa/dashboard');
+    $id_user =
+        $this->session->userdata('id_user');
+
+    $data['mhs'] = $this->db
+        ->select('mahasiswa.*')
+        ->from('mahasiswa')
+        ->where('id_user', $id_user)
+        ->get()
+        ->row();
+
+    $this->load->view(
+        'mahasiswa/dashboard',
+        $data
+    );
     }
 }

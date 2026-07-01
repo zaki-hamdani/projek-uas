@@ -8,15 +8,20 @@ class Absensi extends CI_Controller
         parent::__construct();
 
         cek_login();
-        cek_role('dosen');
 
         $this->load->model('Absensi_model');
         $this->load->model('Mahasiswa_model');
         $this->load->model('Matakuliah_model');
     }
 
+    /* =========================
+       MENU DOSEN
+    ==========================*/
+
     public function index()
     {
+        cek_role('dosen');
+
         $data['absensi'] = $this->Absensi_model->getAll();
 
         $this->load->view(
@@ -27,11 +32,10 @@ class Absensi extends CI_Controller
 
     public function tambah()
     {
-        $data['mahasiswa'] =
-            $this->Mahasiswa_model->getAll();
+        cek_role('dosen');
 
-        $data['matakuliah'] =
-            $this->Matakuliah_model->getAll();
+        $data['mahasiswa'] = $this->Mahasiswa_model->getAll();
+        $data['matakuliah'] = $this->Matakuliah_model->getAll();
 
         if($this->input->post())
         {
@@ -55,48 +59,69 @@ class Absensi extends CI_Controller
             $data
         );
     }
-    
+
     public function edit($id)
-{
-    $data['absensi'] =
-        $this->Absensi_model->getById($id);
-
-    $data['mahasiswa'] =
-        $this->Mahasiswa_model->getAll();
-
-    $data['matakuliah'] =
-        $this->Matakuliah_model->getAll();
-
-    if($this->input->post())
     {
-        $update = [
+        cek_role('dosen');
 
-            'nim' => $this->input->post('nim'),
-            'id_matkul' => $this->input->post('id_matkul'),
-            'tanggal' => $this->input->post('tanggal'),
-            'pertemuan' => $this->input->post('pertemuan'),
-            'status_kehadiran' => $this->input->post('status_kehadiran')
+        $data['absensi'] = $this->Absensi_model->getById($id);
 
-        ];
+        $data['mahasiswa'] = $this->Mahasiswa_model->getAll();
+        $data['matakuliah'] = $this->Matakuliah_model->getAll();
 
-        $this->Absensi_model->update(
-            $id,
-            $update
+        if($this->input->post())
+        {
+            $update = [
+
+                'nim' => $this->input->post('nim'),
+                'id_matkul' => $this->input->post('id_matkul'),
+                'tanggal' => $this->input->post('tanggal'),
+                'pertemuan' => $this->input->post('pertemuan'),
+                'status_kehadiran' => $this->input->post('status_kehadiran')
+
+            ];
+
+            $this->Absensi_model->update($id, $update);
+
+            redirect('index.php/absensi');
+        }
+
+        $this->load->view(
+            'dosen/absensi/edit',
+            $data
         );
+    }
+
+    public function hapus($id)
+    {
+        cek_role('dosen');
+
+        $this->Absensi_model->delete($id);
 
         redirect('index.php/absensi');
     }
 
-    $this->load->view(
-        'dosen/absensi/edit',
-        $data
-    );
-}
+    /* =========================
+       MENU MAHASISWA
+    ==========================*/
 
-public function hapus($id)
-{
-    $this->Absensi_model->delete($id);
+    public function riwayat()
+    {
+        cek_role('mahasiswa');
 
-    redirect('index.php/absensi');
-}
+        $id_user = $this->session->userdata('id_user');
+
+        $mhs = $this->db
+                    ->where('id_user', $id_user)
+                    ->get('mahasiswa')
+                    ->row();
+
+        $data['riwayat'] = $this->Absensi_model->getRiwayatByNim($mhs->nim);
+        $data['mhs'] = $mhs;
+
+        $this->load->view(
+            'mahasiswa/riwayat_absensi',
+            $data
+        );
+    }
 }
