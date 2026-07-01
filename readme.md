@@ -122,6 +122,43 @@ http://localhost/projek-uas
 
 ---
 
+# Login
+
+## Admin
+
+```
+Username : admin
+Password : admin123
+```
+
+## Dosen
+
+```
+Username : dosen
+Password : dosen123
+```
+
+## Mahasiswa
+
+```
+Username : zaki
+Password : zaki123
+```
+```
+Username : dopan
+Password : dopan123
+```
+```
+Username : rizqy
+Password : rizqy123
+```
+```
+Username : edwin
+Password : edwin123
+```
+
+---
+
 ## Hak Akses
 
 ### Admin
